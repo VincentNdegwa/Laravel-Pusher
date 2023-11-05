@@ -8,6 +8,9 @@ function Main() {
 
     const [username, setUsername] = useState("Vincent")
     const [text, setText] = useState("")
+    const [messages, setMessages] = useState([])
+
+    let arrayMessages = []
 
     const submitForm = async ev => {
         ev.preventDefault()
@@ -18,7 +21,7 @@ function Main() {
     }
 
     useEffect(() => {
-        // Pusher.logToConsole = true;
+        Pusher.logToConsole = true;
 
         var pusher = new Pusher('b526271d9952b0873f03', {
             cluster: 'mt1'
@@ -26,7 +29,8 @@ function Main() {
 
         var channel = pusher.subscribe('chat');
         channel.bind('chat_messages', function (data) {
-            alert(JSON.stringify(data));
+            arrayMessages.push(JSON.parse(JSON.stringify(data)))
+            setMessages(arrayMessages)
         });
     })
 
@@ -43,10 +47,15 @@ function Main() {
                     onChange={ev => setUsername(ev.target.value)}
                 />
                 <div className="text-display">
-                    <div className="text-item">
-                        <span>Vin</span>
-                        <p>text e</p>
-                    </div>
+                    {messages.map((item) => {
+                        return (
+                            <div className="text-item">
+                                <span>{item.username}</span>
+                                <p>{item.message}</p>
+                            </div>
+                        )
+
+                    })}
                 </div>
             </div>
             <form onSubmit={submitForm} className='form-control text-form'>
