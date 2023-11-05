@@ -1,11 +1,67 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import "./styles/main.css"
+import Pusher from "pusher-js"
+import axios from 'axios'
+import { data } from 'autoprefixer'
 
 function Main() {
-  return (
-    <div>
-      hello main
-    </div>
-  )
+
+    const [username, setUsername] = useState("Vincent")
+    const [text, setText] = useState("")
+
+    const submitForm = async ev => {
+        ev.preventDefault()
+        await axios.post("http://192.168.43.120:8000/api/message",
+            { username: username, message: text })
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+        // Pusher.logToConsole = true;
+
+        var pusher = new Pusher('b526271d9952b0873f03', {
+            cluster: 'mt1'
+        });
+
+        var channel = pusher.subscribe('chat');
+        channel.bind('chat_messages', function (data) {
+            alert(JSON.stringify(data));
+        });
+    })
+
+
+
+
+    return (
+        <div className="container">
+            <div className="container-holder">
+                <input
+                    type='text'
+                    className='usernameInput'
+                    value={username}
+                    onChange={ev => setUsername(ev.target.value)}
+                />
+                <div className="text-display">
+                    <div className="text-item">
+                        <span>Vin</span>
+                        <p>text e</p>
+                    </div>
+                </div>
+            </div>
+            <form onSubmit={submitForm} className='form-control text-form'>
+                <div className="input-holder">
+                    <input
+                        type='text'
+                        value={text}
+                        onChange={ev => setText(ev.target.value)}
+                        placeholder='Write a message' />
+                    <button type='submit'>Send</button>
+                </div>
+            </form>
+        </div>
+
+    )
 }
 
 export default Main

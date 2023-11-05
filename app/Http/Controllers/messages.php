@@ -9,9 +9,11 @@ class messages extends Controller
 {
     public function readMessage(Request $request)
     {
-        $event = event(new message($request->input("username"), $request->input("message")));
+        broadcast(new message($request->input("username"), $request->input("message")));
+
         return response()->json([
-            "event" => $event,
+            "status" => "message received",
+            "message" => $request->input("message")
         ]);
     }
 }

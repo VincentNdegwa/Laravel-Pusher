@@ -14,6 +14,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <!-- Scripts -->
 @routes
 @viteReactRefresh
