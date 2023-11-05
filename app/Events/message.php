@@ -24,12 +24,11 @@ class message
 
     public function broadcastOn(): array
     {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
+        return ['chat'];
     }
 
     public function broadcatsAS()
     {
+        return ["chat_messages"];
     }
 }
